@@ -1,0 +1,54 @@
+{
+    "mobiles": [
+      {
+        "modelID": "65de132ff5f8e1e3d6e04ada",
+        "name": "Iphone11",
+        "os": "IOS",
+        "country": "India"
+      },
+      {
+        "modelID": "65de132ff5f8e1e3d6e04adb",
+        "name": "Iphone12",
+        "os": "IOS",
+        "country": "India"
+      },
+      {
+        "modelID": "65de132ff5f8e1e3d6e04adc",
+        "name": "Xperia",
+        "os": "Android",
+        "country": "British Indian Ocean Territory (Chagos Archipelago)"
+      },
+      {
+        "modelID": "65de132ff5f8e1e3d6e04add",
+        "name": "Jerry",
+        "os": "Chaunceyland",
+        "country": "Algeria"
+      },
+      {
+        "modelID": "65de132ff5f8e1e3d6e04ade",
+        "name": "Sheridan",
+        "os": "Parma",
+        "country": "Israel"
+      },
+      {
+        "modelID": "65de132ff5f8e1e3d6e04adf",
+        "name": "Adolfo",
+        "os": "Vernonfield",
+        "country": "Namibia"
+      }
+    ],
+    "brands": [
+      {
+        "name": "Apple",
+        "country": "Tokelau"
+      },
+      {
+        "name": "Sony",
+        "country": "Tokelau"
+      },
+      {
+        "name": "Samsung",
+        "country": "Tokelau"
+      }
+    ]
+  }

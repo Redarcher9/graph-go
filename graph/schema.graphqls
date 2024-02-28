@@ -1,0 +1,33 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Mobile{
+  modelID: String!
+  name: String!
+  os:String!
+  country:String!
+  brand: Brand!
+}
+
+type Brand{
+  name: String!
+  country:String!
+  mobiles: [Mobile]!
+}
+
+type Query{
+  Brands:[Brand]
+  Mobiles:[Mobile]
+}
+
+
+input NewMobile{
+  name:String!
+  brand:String!
+  }
+
+
+type Mutation {
+  createMobile(input: NewMobile!): Mobile!
+}
