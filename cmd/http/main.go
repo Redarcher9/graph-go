@@ -15,7 +15,6 @@ import (
 )
 
 func main() {
-
 	//Set up Mobile Processor
 	mobileRepository := repository.NewMobileRepo("Gorm")
 	mobileService := services.NewMobileInteractor(&mobileRepository)

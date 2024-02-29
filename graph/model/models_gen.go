@@ -3,9 +3,8 @@
 package model
 
 type Brand struct {
-	Name    string    `json:"name"`
-	Country string    `json:"country"`
-	Mobiles []*Mobile `json:"mobiles"`
+	Name    string `json:"name"`
+	Country string `json:"country"`
 }
 
 type Mobile struct {

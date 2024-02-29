@@ -4,51 +4,57 @@
         "modelID": "65de132ff5f8e1e3d6e04ada",
         "name": "Iphone11",
         "os": "IOS",
-        "country": "India"
+        "country": "India",
+        "brandID": "1"
       },
       {
         "modelID": "65de132ff5f8e1e3d6e04adb",
         "name": "Iphone12",
         "os": "IOS",
-        "country": "India"
+        "country": "India",
+        "brandID": "1"
       },
       {
         "modelID": "65de132ff5f8e1e3d6e04adc",
         "name": "Xperia",
         "os": "Android",
-        "country": "British Indian Ocean Territory (Chagos Archipelago)"
+        "country": "Korea",
+        "brandID": "2"
       },
       {
         "modelID": "65de132ff5f8e1e3d6e04add",
-        "name": "Jerry",
-        "os": "Chaunceyland",
-        "country": "Algeria"
+        "name": "A52",
+        "os": "Android",
+        "country": "Korea",
+        "brandID": "3"
       },
       {
         "modelID": "65de132ff5f8e1e3d6e04ade",
-        "name": "Sheridan",
-        "os": "Parma",
-        "country": "Israel"
+        "name": "S10",
+        "os": "Android",
+        "country": "Israel",
+        "brandID": "3"
       },
       {
         "modelID": "65de132ff5f8e1e3d6e04adf",
-        "name": "Adolfo",
-        "os": "Vernonfield",
-        "country": "Namibia"
+        "name": "Xperia10",
+        "os": "Android",
+        "country": "Japan",
+        "brandID": "2"
       }
     ],
     "brands": [
       {
         "name": "Apple",
-        "country": "Tokelau"
+        "brandID": "1"
       },
       {
         "name": "Sony",
-        "country": "Tokelau"
+        "brandID": "2"
       },
       {
         "name": "Samsung",
-        "country": "Tokelau"
+        "brandID": "3"
       }
     ]
   }

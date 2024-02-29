@@ -1,5 +1,6 @@
 package domain
 
 type Brand struct {
-	Name string
+	Name    string
+	BrandID string
 }

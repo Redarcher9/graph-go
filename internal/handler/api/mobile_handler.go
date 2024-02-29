@@ -29,6 +29,10 @@ func (b *MobileProcessor) GetMobiles(ctx context.Context) ([]*model.Mobile, erro
 	return mapMobileToModel(res), nil
 }
 
+func (b *MobileProcessor) GetMobileByName(ctx context.Context, name string) (*model.Mobile, error) {
+	return &model.Mobile{}, nil
+}
+
 func mapMobileToModel(mobile []domain.Mobile) []*model.Mobile {
 	Modelmobiles := []*model.Mobile{}
 

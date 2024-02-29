@@ -2,6 +2,7 @@ package repository
 
 import (
 	"Gographql/internal/core/domain"
+	"Gographql/internal/infrastructure/repository/data"
 	"context"
 )
 
@@ -16,6 +17,14 @@ func NewBrandRepo(gorm string) BrandRepo {
 }
 
 func (mr *BrandRepo) GetBrands(ctx context.Context) ([]domain.Brand, error) {
-	res := []domain.Brand{}
+	_, brands := data.Read()
+	var res []domain.Brand
+
+	for _, v := range brands {
+		res = append(res, domain.Brand{
+			Name:    v.Name,
+			BrandID: v.BrandID,
+		})
+	}
 	return res, nil
 }

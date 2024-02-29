@@ -13,12 +13,12 @@ type Mobile{
 type Brand{
   name: String!
   country:String!
-  mobiles: [Mobile]!
 }
 
 type Query{
   Brands:[Brand]
   Mobiles:[Mobile]
+  Mobile(name: String!) : Mobile
 }
 
 

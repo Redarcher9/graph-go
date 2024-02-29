@@ -26,6 +26,11 @@ func (r *queryResolver) Mobiles(ctx context.Context) ([]*model.Mobile, error) {
 	return r.MobileProcessor.GetMobiles(ctx)
 }
 
+// Mobiles is the resolver for the Mobiles field.
+func (r *queryResolver) Mobile(ctx context.Context, name string) (*model.Mobile, error) {
+	return r.MobileProcessor.GetMobileByName(ctx, name)
+}
+
 // Mutation returns graph.MutationResolver implementation.
 func (r *Resolver) Mutation() graph.MutationResolver { return &mutationResolver{r} }
 
