@@ -47,7 +47,7 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Brand struct {
-		Country func(childComplexity int) int
+		BrandID func(childComplexity int) int
 		Name    func(childComplexity int) int
 	}
 
@@ -98,12 +98,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
-	case "Brand.country":
-		if e.complexity.Brand.Country == nil {
+	case "Brand.brandID":
+		if e.complexity.Brand.BrandID == nil {
 			break
 		}
 
-		return e.complexity.Brand.Country(childComplexity), true
+		return e.complexity.Brand.BrandID(childComplexity), true
 
 	case "Brand.name":
 		if e.complexity.Brand.Name == nil {
@@ -305,7 +305,7 @@ type Mobile{
 
 type Brand{
   name: String!
-  country:String!
+  brandID:String!
 }
 
 type Query{
@@ -459,8 +459,8 @@ func (ec *executionContext) fieldContext_Brand_name(ctx context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Brand_country(ctx context.Context, field graphql.CollectedField, obj *model.Brand) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Brand_country(ctx, field)
+func (ec *executionContext) _Brand_brandID(ctx context.Context, field graphql.CollectedField, obj *model.Brand) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Brand_brandID(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -473,7 +473,7 @@ func (ec *executionContext) _Brand_country(ctx context.Context, field graphql.Co
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Country, nil
+		return obj.BrandID, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -490,7 +490,7 @@ func (ec *executionContext) _Brand_country(ctx context.Context, field graphql.Co
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Brand_country(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Brand_brandID(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Brand",
 		Field:      field,
@@ -720,8 +720,8 @@ func (ec *executionContext) fieldContext_Mobile_brand(ctx context.Context, field
 			switch field.Name {
 			case "name":
 				return ec.fieldContext_Brand_name(ctx, field)
-			case "country":
-				return ec.fieldContext_Brand_country(ctx, field)
+			case "brandID":
+				return ec.fieldContext_Brand_brandID(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Brand", field.Name)
 		},
@@ -834,8 +834,8 @@ func (ec *executionContext) fieldContext_Query_Brands(ctx context.Context, field
 			switch field.Name {
 			case "name":
 				return ec.fieldContext_Brand_name(ctx, field)
-			case "country":
-				return ec.fieldContext_Brand_country(ctx, field)
+			case "brandID":
+				return ec.fieldContext_Brand_brandID(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Brand", field.Name)
 		},
@@ -2920,8 +2920,8 @@ func (ec *executionContext) _Brand(ctx context.Context, sel ast.SelectionSet, ob
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "country":
-			out.Values[i] = ec._Brand_country(ctx, field, obj)
+		case "brandID":
+			out.Values[i] = ec._Brand_brandID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 )
 
 type Mobile struct {
@@ -21,9 +22,9 @@ type Brand struct {
 
 func Read() ([]Mobile, []Brand) {
 	// Read the JSON file
-	file, err := ioutil.ReadFile("data.json")
+	file, err := ioutil.ReadFile("internal/infrastructure/repository/data/data.json")
 	if err != nil {
-		fmt.Println("Error reading JSON file:", err)
+		log.Panic("Error reading JSON file:", err)
 	}
 
 	// Define struct variables to unmarshal JSON data
@@ -54,6 +55,5 @@ func Read() ([]Mobile, []Brand) {
 			BrandID: brand["brandID"],
 		})
 	}
-
 	return mobiles, brands
 }

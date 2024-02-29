@@ -4,7 +4,7 @@ package model
 
 type Brand struct {
 	Name    string `json:"name"`
-	Country string `json:"country"`
+	BrandID string `json:"brandID"`
 }
 
 type Mobile struct {

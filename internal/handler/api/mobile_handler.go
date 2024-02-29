@@ -4,7 +4,6 @@ import (
 	"Gographql/graph/model"
 	"Gographql/internal/core/domain"
 	"context"
-	"fmt"
 	"log"
 )
 
@@ -33,12 +32,20 @@ func (b *MobileProcessor) GetMobileByName(ctx context.Context, name string) (*mo
 	return &model.Mobile{}, nil
 }
 
-func mapMobileToModel(mobile []domain.Mobile) []*model.Mobile {
+func mapMobileToModel(mobiles []domain.Mobile) []*model.Mobile {
 	Modelmobiles := []*model.Mobile{}
 
-	for _, v := range Modelmobiles {
-		fmt.Println(v)
-		Modelmobiles = append(Modelmobiles, &model.Mobile{})
+	for _, v := range mobiles {
+		Modelmobiles = append(Modelmobiles, &model.Mobile{
+			ModelID: v.ModelID,
+			Name:    v.Name,
+			Os:      v.OS,
+			Country: v.Country,
+			Brand: &model.Brand{
+				Name:    v.Brand.Name,
+				BrandID: v.Brand.BrandID,
+			},
+		})
 	}
 	return Modelmobiles
 }

@@ -4,7 +4,6 @@ import (
 	"Gographql/graph/model"
 	"Gographql/internal/core/domain"
 	"context"
-	"fmt"
 	"log"
 )
 
@@ -33,8 +32,10 @@ func mapBrandToModel(brands []domain.Brand) []*model.Brand {
 	Modelbrands := []*model.Brand{}
 
 	for _, v := range brands {
-		fmt.Println(v)
-		Modelbrands = append(Modelbrands, &model.Brand{})
+		Modelbrands = append(Modelbrands, &model.Brand{
+			Name:    v.Name,
+			BrandID: v.BrandID,
+		})
 	}
 	return Modelbrands
 }

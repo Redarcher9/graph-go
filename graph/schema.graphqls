@@ -12,7 +12,7 @@ type Mobile{
 
 type Brand{
   name: String!
-  country:String!
+  brandID:String!
 }
 
 type Query{

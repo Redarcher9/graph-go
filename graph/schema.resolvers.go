@@ -23,7 +23,8 @@ func (r *queryResolver) Brands(ctx context.Context) ([]*model.Brand, error) {
 
 // Mobiles is the resolver for the Mobiles field.
 func (r *queryResolver) Mobiles(ctx context.Context) ([]*model.Mobile, error) {
-	return r.MobileProcessor.GetMobiles(ctx)
+	res, _ := r.MobileProcessor.GetMobiles(ctx)
+	return res, nil
 }
 
 // Mobiles is the resolver for the Mobiles field.
