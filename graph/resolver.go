@@ -12,6 +12,8 @@ import (
 type MobileProcessor interface {
 	GetMobiles(ctx context.Context) ([]*model.Mobile, error)
 	GetMobileByName(ctx context.Context, name string) (*model.Mobile, error)
+	AddMobile(ctx context.Context, input model.NewMobile) (*model.Mobile, error)
+	UpdateMobile(ctx context.Context, input model.NewMobile) (*model.Mobile, error)
 }
 
 type BrandProcessor interface {

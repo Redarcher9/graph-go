@@ -32,6 +32,22 @@ func (b *MobileProcessor) GetMobileByName(ctx context.Context, name string) (*mo
 	return &model.Mobile{}, nil
 }
 
+func (b *MobileProcessor) AddMobile(ctx context.Context, input model.NewMobile) (*model.Mobile, error) {
+	res, err := b.mobileInteractor.AddMobile(ctx, input)
+	if err != nil {
+		log.Println(err)
+	}
+	return &res, nil
+}
+
+func (b *MobileProcessor) UpdateMobile(ctx context.Context, input model.NewMobile) (*model.Mobile, error) {
+	res, err := b.mobileInteractor.UpdateMobile(ctx, input)
+	if err != nil {
+		log.Println(err)
+	}
+	return &res, nil
+}
+
 func mapMobileToModel(mobiles []domain.Mobile) []*model.Mobile {
 	Modelmobiles := []*model.Mobile{}
 

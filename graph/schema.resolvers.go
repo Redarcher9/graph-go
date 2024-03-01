@@ -8,12 +8,16 @@ import (
 	graph "Gographql/graph/generated"
 	"Gographql/graph/model"
 	"context"
-	"fmt"
 )
 
 // CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateMobile(ctx context.Context, input model.NewMobile) (*model.Mobile, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+func (r *mutationResolver) AddMobile(ctx context.Context, input model.NewMobile) (*model.Mobile, error) {
+	return r.MobileProcessor.AddMobile(ctx, input)
+}
+
+// UpdateMobile is the resolver for Update mobile field
+func (r *mutationResolver) UpdateMobile(ctx context.Context, input model.NewMobile) (*model.Mobile, error) {
+	return r.MobileProcessor.UpdateMobile(ctx, input)
 }
 
 // Brands is the resolver for the Brands field.

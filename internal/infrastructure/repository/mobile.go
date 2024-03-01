@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"Gographql/graph/model"
 	"Gographql/internal/core/domain"
 	"Gographql/internal/infrastructure/repository/data"
 	"context"
@@ -40,4 +41,16 @@ func (mr *MobileRepo) GetMobiles(ctx context.Context) ([]domain.Mobile, error) {
 		})
 	}
 	return res, nil
+}
+
+func (mr *MobileRepo) AddMobile(ctx context.Context, input model.NewMobile) (model.Mobile, error) {
+	return data.AddMobile(input)
+}
+
+func (mr *MobileRepo) UpdateMobile(ctx context.Context, input model.NewMobile) (model.Mobile, error) {
+	return data.UpdateMobile(input)
+}
+
+func (mr *MobileRepo) GetMobileByName(ctx context.Context, name string) (model.Mobile, error) {
+	return data.GetMobileByName(name)
 }

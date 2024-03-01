@@ -23,11 +23,15 @@ type Query{
 
 
 input NewMobile{
-  name:String!
-  brand:String!
+  modelID: String!
+  name: String!
+  os:String!
+  country:String!
+  brandID:String!
   }
 
 
 type Mutation {
-  createMobile(input: NewMobile!): Mobile!
+  AddMobile(input: NewMobile!): Mobile
+  UpdateMobile(input: NewMobile!):Mobile
 }

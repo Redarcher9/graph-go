@@ -60,7 +60,7 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateMobile func(childComplexity int, input model.NewMobile) int
+		AddMobile func(childComplexity int, input model.NewMobile) int
 	}
 
 	Query struct {
@@ -71,7 +71,7 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	CreateMobile(ctx context.Context, input model.NewMobile) (*model.Mobile, error)
+	AddMobile(ctx context.Context, input model.NewMobile) (*model.Mobile, error)
 }
 type QueryResolver interface {
 	Brands(ctx context.Context) ([]*model.Brand, error)
@@ -147,17 +147,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mobile.Os(childComplexity), true
 
-	case "Mutation.createMobile":
-		if e.complexity.Mutation.CreateMobile == nil {
+	case "Mutation.AddMobile":
+		if e.complexity.Mutation.AddMobile == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_createMobile_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_AddMobile_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateMobile(childComplexity, args["input"].(model.NewMobile)), true
+		return e.complexity.Mutation.AddMobile(childComplexity, args["input"].(model.NewMobile)), true
 
 	case "Query.Brands":
 		if e.complexity.Query.Brands == nil {
@@ -316,13 +316,16 @@ type Query{
 
 
 input NewMobile{
-  name:String!
-  brand:String!
+  modelID: String!
+  name: String!
+  os:String!
+  country:String!
+  brandID:String!
   }
 
 
 type Mutation {
-  createMobile(input: NewMobile!): Mobile!
+  AddMobile(input: NewMobile!): Mobile
 }
 `, BuiltIn: false},
 }
@@ -332,7 +335,7 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
 // region    ***************************** args.gotpl *****************************
 
-func (ec *executionContext) field_Mutation_createMobile_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_AddMobile_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 model.NewMobile
@@ -729,8 +732,8 @@ func (ec *executionContext) fieldContext_Mobile_brand(ctx context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Mutation_createMobile(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_createMobile(ctx, field)
+func (ec *executionContext) _Mutation_AddMobile(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_AddMobile(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -743,24 +746,21 @@ func (ec *executionContext) _Mutation_createMobile(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateMobile(rctx, fc.Args["input"].(model.NewMobile))
+		return ec.resolvers.Mutation().AddMobile(rctx, fc.Args["input"].(model.NewMobile))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(*model.Mobile)
 	fc.Result = res
-	return ec.marshalNMobile2ᚖGographqlᚋgraphᚋmodelᚐMobile(ctx, field.Selections, res)
+	return ec.marshalOMobile2ᚖGographqlᚋgraphᚋmodelᚐMobile(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Mutation_createMobile(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Mutation_AddMobile(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Mutation",
 		Field:      field,
@@ -789,7 +789,7 @@ func (ec *executionContext) fieldContext_Mutation_createMobile(ctx context.Conte
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_createMobile_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Mutation_AddMobile_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -2869,13 +2869,20 @@ func (ec *executionContext) unmarshalInputNewMobile(ctx context.Context, obj int
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "brand"}
+	fieldsInOrder := [...]string{"modelID", "name", "os", "country", "brandID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
+		case "modelID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("modelID"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ModelID = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -2883,13 +2890,27 @@ func (ec *executionContext) unmarshalInputNewMobile(ctx context.Context, obj int
 				return it, err
 			}
 			it.Name = data
-		case "brand":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("brand"))
+		case "os":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("os"))
 			data, err := ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Brand = data
+			it.Os = data
+		case "country":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("country"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Country = data
+		case "brandID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("brandID"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BrandID = data
 		}
 	}
 
@@ -3026,13 +3047,10 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Mutation")
-		case "createMobile":
+		case "AddMobile":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_createMobile(ctx, field)
+				return ec._Mutation_AddMobile(ctx, field)
 			})
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3512,20 +3530,6 @@ func (ec *executionContext) marshalNBrand2ᚖGographqlᚋgraphᚋmodelᚐBrand(c
 		return graphql.Null
 	}
 	return ec._Brand(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalNMobile2GographqlᚋgraphᚋmodelᚐMobile(ctx context.Context, sel ast.SelectionSet, v model.Mobile) graphql.Marshaler {
-	return ec._Mobile(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNMobile2ᚖGographqlᚋgraphᚋmodelᚐMobile(ctx context.Context, sel ast.SelectionSet, v *model.Mobile) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._Mobile(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNNewMobile2GographqlᚋgraphᚋmodelᚐNewMobile(ctx context.Context, v interface{}) (model.NewMobile, error) {

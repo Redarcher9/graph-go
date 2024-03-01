@@ -1,6 +1,7 @@
 package data
 
 import (
+	"Gographql/graph/model"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -56,4 +57,95 @@ func Read() ([]Mobile, []Brand) {
 		})
 	}
 	return mobiles, brands
+}
+
+func AddMobile(input model.NewMobile) (model.Mobile, error) {
+	mobiles, brands := Read()
+	_ = append(mobiles, Mobile{
+		ModelID: input.ModelID,
+		Name:    input.Name,
+		OS:      input.Os,
+		Country: input.Country,
+		BrandID: input.BrandID,
+	})
+
+	var brand Brand
+	for _, v := range brands {
+		if v.BrandID == input.BrandID {
+			brand = v
+		}
+	}
+
+	return model.Mobile{
+		ModelID: input.ModelID,
+		Name:    input.Name,
+		Os:      input.Os,
+		Country: input.Country,
+		Brand: &model.Brand{
+			Name:    brand.BrandID,
+			BrandID: brand.BrandID,
+		},
+	}, nil
+}
+
+func UpdateMobile(input model.NewMobile) (model.Mobile, error) {
+	mobiles, brands := Read()
+	var mobile Mobile
+	for _, m := range mobiles {
+		if m.Name == input.Name {
+			mobile = m
+		}
+	}
+
+	mobile.ModelID = input.ModelID
+	mobile.Name = input.Name
+	mobile.OS = input.Os
+	mobile.Country = input.Country
+
+	var brand Brand
+	for _, v := range brands {
+		if v.BrandID == input.BrandID {
+			brand = v
+		}
+	}
+
+	return model.Mobile{
+		ModelID: mobile.BrandID,
+		Name:    mobile.Name,
+		Os:      mobile.OS,
+		Country: mobile.Country,
+		Brand: &model.Brand{
+			Name:    brand.BrandID,
+			BrandID: brand.BrandID,
+		},
+	}, nil
+}
+
+func GetMobileByName(name string) (model.Mobile, error) {
+	mobiles, brands := Read()
+
+	var mobile Mobile
+	for _, m := range mobiles {
+		if m.Name == name {
+			mobile = m
+		}
+	}
+
+	var brand Brand
+	for _, v := range brands {
+		if v.BrandID == mobile.BrandID {
+			brand = v
+		}
+	}
+
+	return model.Mobile{
+		ModelID: mobile.BrandID,
+		Name:    mobile.Name,
+		Os:      mobile.OS,
+		Country: mobile.Country,
+		Brand: &model.Brand{
+			Name:    brand.BrandID,
+			BrandID: brand.BrandID,
+		},
+	}, nil
 }

@@ -1,6 +1,7 @@
 package api
 
 import (
+	"Gographql/graph/model"
 	"Gographql/internal/core/domain"
 	"context"
 )
@@ -8,6 +9,9 @@ import (
 type (
 	MobileService interface {
 		GetMobiles(ctx context.Context) ([]domain.Mobile, error)
+		AddMobile(ctx context.Context, input model.NewMobile) (model.Mobile, error)
+		GetMobileByName(ctx context.Context, name string) (model.Mobile, error)
+		UpdateMobile(ctx context.Context, input model.NewMobile) (model.Mobile, error)
 	}
 
 	BrandService interface {

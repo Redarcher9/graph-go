@@ -19,8 +19,11 @@ type Mutation struct {
 }
 
 type NewMobile struct {
-	Name  string `json:"name"`
-	Brand string `json:"brand"`
+	ModelID string `json:"modelID"`
+	Name    string `json:"name"`
+	Os      string `json:"os"`
+	Country string `json:"country"`
+	BrandID string `json:"brandID"`
 }
 
 type Query struct {
