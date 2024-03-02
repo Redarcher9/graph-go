@@ -21,7 +21,7 @@ type Query{
   Mobile(name: String!) : Mobile
 }
 
-
+c
 input NewMobile{
   modelID: String!
   name: String!

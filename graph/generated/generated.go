@@ -60,7 +60,8 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		AddMobile func(childComplexity int, input model.NewMobile) int
+		AddMobile    func(childComplexity int, input model.NewMobile) int
+		UpdateMobile func(childComplexity int, input model.NewMobile) int
 	}
 
 	Query struct {
@@ -72,6 +73,7 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	AddMobile(ctx context.Context, input model.NewMobile) (*model.Mobile, error)
+	UpdateMobile(ctx context.Context, input model.NewMobile) (*model.Mobile, error)
 }
 type QueryResolver interface {
 	Brands(ctx context.Context) ([]*model.Brand, error)
@@ -158,6 +160,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.AddMobile(childComplexity, args["input"].(model.NewMobile)), true
+
+	case "Mutation.UpdateMobile":
+		if e.complexity.Mutation.UpdateMobile == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_UpdateMobile_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateMobile(childComplexity, args["input"].(model.NewMobile)), true
 
 	case "Query.Brands":
 		if e.complexity.Query.Brands == nil {
@@ -326,6 +340,7 @@ input NewMobile{
 
 type Mutation {
   AddMobile(input: NewMobile!): Mobile
+  UpdateMobile(input: NewMobile!):Mobile
 }
 `, BuiltIn: false},
 }
@@ -336,6 +351,21 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 // region    ***************************** args.gotpl *****************************
 
 func (ec *executionContext) field_Mutation_AddMobile_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.NewMobile
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNNewMobile2GographqlᚋgraphᚋmodelᚐNewMobile(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_UpdateMobile_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 model.NewMobile
@@ -790,6 +820,70 @@ func (ec *executionContext) fieldContext_Mutation_AddMobile(ctx context.Context,
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_AddMobile_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_UpdateMobile(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_UpdateMobile(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateMobile(rctx, fc.Args["input"].(model.NewMobile))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*model.Mobile)
+	fc.Result = res
+	return ec.marshalOMobile2ᚖGographqlᚋgraphᚋmodelᚐMobile(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_UpdateMobile(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "modelID":
+				return ec.fieldContext_Mobile_modelID(ctx, field)
+			case "name":
+				return ec.fieldContext_Mobile_name(ctx, field)
+			case "os":
+				return ec.fieldContext_Mobile_os(ctx, field)
+			case "country":
+				return ec.fieldContext_Mobile_country(ctx, field)
+			case "brand":
+				return ec.fieldContext_Mobile_brand(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Mobile", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_UpdateMobile_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -3050,6 +3144,10 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "AddMobile":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_AddMobile(ctx, field)
+			})
+		case "UpdateMobile":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_UpdateMobile(ctx, field)
 			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))

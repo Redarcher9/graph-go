@@ -1,11 +1,13 @@
 package main
 
 import (
+	grpcserver "Gographql/cmd/grpc"
 	graph "Gographql/graph"
 	generated "Gographql/graph/generated"
 	"Gographql/internal/core/services"
 	"Gographql/internal/handler/api"
 	"Gographql/internal/infrastructure/repository"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -43,10 +45,19 @@ func main() {
 		IdleTimeout:  time.Second * 60,
 		Handler:      mux,
 	}
+	//Run GRPC server
+	go func() {
+		grpcserver.InitialiseGRPC()
+	}()
+
 	//Go Routine to run server
+	go func() {
+		fmt.Println("REST API started")
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Panic(err)
+		}
+	}()
 
-	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		log.Panic(err)
-	}
-
+	// Prevent the main goroutine from exiting
+	select {}
 }
