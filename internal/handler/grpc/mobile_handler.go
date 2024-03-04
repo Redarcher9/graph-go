@@ -3,12 +3,10 @@ package grpcHandler
 import (
 	pb "Gographql/proto"
 	"context"
-	"fmt"
 	"log"
 )
 
 func (gh *GrpcHandler) SayHello(ctx context.Context, req *pb.NoParam) (*pb.HelloResponse, error) {
-	_, _ = gh.mobileInteractor.GetMobilesByOs(ctx, "IOS")
 	return &pb.HelloResponse{
 		Message: "Hello",
 	}, nil
@@ -36,8 +34,4 @@ func (gh *GrpcHandler) GetMobilesByOs(ctx context.Context, req *pb.MobilesByOsRe
 	return &pb.MobilesByOsResponse{
 		Mobiles: res,
 	}, nil
-}
-
-func (gh *GrpcHandler) mustEmbedUnimplementedGreetServiceServer() {
-	fmt.Println("DO nothing")
 }
