@@ -54,3 +54,7 @@ func (mr *MobileRepo) UpdateMobile(ctx context.Context, input model.NewMobile) (
 func (mr *MobileRepo) GetMobileByName(ctx context.Context, name string) (model.Mobile, error) {
 	return data.GetMobileByName(name)
 }
+
+func (mr *MobileRepo) GetMobilesByOs(ctx context.Context, name string) ([]domain.Mobile, error) {
+	return data.GetMobilesByOs(name)
+}

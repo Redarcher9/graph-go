@@ -2,6 +2,7 @@ package data
 
 import (
 	"Gographql/graph/model"
+	"Gographql/internal/core/domain"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -148,4 +149,33 @@ func GetMobileByName(name string) (model.Mobile, error) {
 			BrandID: brand.BrandID,
 		},
 	}, nil
+}
+
+func GetMobilesByOs(osname string) ([]domain.Mobile, error) {
+	mobileList, brands := Read()
+	var mobiles []domain.Mobile
+
+	for _, v := range mobileList {
+
+		var brand Brand
+		for _, b := range brands {
+			if v.BrandID == b.BrandID {
+				brand = b
+			}
+		}
+
+		if v.OS == osname {
+			mobiles = append(mobiles, domain.Mobile{
+				ModelID: v.ModelID,
+				Name:    v.Name,
+				OS:      v.OS,
+				Country: v.Country,
+				Brand: domain.Brand{
+					Name:    brand.Name,
+					BrandID: brand.BrandID,
+				},
+			})
+		}
+	}
+	return mobiles, nil
 }

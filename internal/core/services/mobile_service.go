@@ -34,3 +34,7 @@ func (bi *MobileInteractor) GetMobileByName(ctx context.Context, name string) (m
 func (bi *MobileInteractor) UpdateMobile(ctx context.Context, input model.NewMobile) (model.Mobile, error) {
 	return bi.Repo.UpdateMobile(ctx, input)
 }
+
+func (bi *MobileInteractor) GetMobilesByOs(ctx context.Context, name string) ([]domain.Mobile, error) {
+	return bi.Repo.GetMobilesByOs(ctx, name)
+}

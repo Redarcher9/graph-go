@@ -12,6 +12,7 @@ type (
 		AddMobile(ctx context.Context, input model.NewMobile) (model.Mobile, error)
 		UpdateMobile(ctx context.Context, input model.NewMobile) (model.Mobile, error)
 		GetMobileByName(ctx context.Context, name string) (model.Mobile, error)
+		GetMobilesByOs(ctx context.Context, name string) ([]domain.Mobile, error)
 	}
 	BrandRepo interface {
 		GetBrands(ctx context.Context) ([]domain.Brand, error)

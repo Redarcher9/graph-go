@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	GreetService_SayHello_FullMethodName = "/greet_service.GreetService/SayHello"
+	GreetService_SayHello_FullMethodName       = "/greet_service.GreetService/SayHello"
+	GreetService_GetMobilesByOs_FullMethodName = "/greet_service.GreetService/GetMobilesByOs"
 )
 
 // GreetServiceClient is the client API for GreetService service.
@@ -28,6 +29,7 @@ const (
 type GreetServiceClient interface {
 	// simple RPC
 	SayHello(ctx context.Context, in *NoParam, opts ...grpc.CallOption) (*HelloResponse, error)
+	GetMobilesByOs(ctx context.Context, in *MobilesByOsRequest, opts ...grpc.CallOption) (*MobilesByOsResponse, error)
 }
 
 type greetServiceClient struct {
@@ -47,12 +49,22 @@ func (c *greetServiceClient) SayHello(ctx context.Context, in *NoParam, opts ...
 	return out, nil
 }
 
+func (c *greetServiceClient) GetMobilesByOs(ctx context.Context, in *MobilesByOsRequest, opts ...grpc.CallOption) (*MobilesByOsResponse, error) {
+	out := new(MobilesByOsResponse)
+	err := c.cc.Invoke(ctx, GreetService_GetMobilesByOs_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GreetServiceServer is the server API for GreetService service.
 // All implementations must embed UnimplementedGreetServiceServer
 // for forward compatibility
 type GreetServiceServer interface {
 	// simple RPC
 	SayHello(context.Context, *NoParam) (*HelloResponse, error)
+	GetMobilesByOs(context.Context, *MobilesByOsRequest) (*MobilesByOsResponse, error)
 	mustEmbedUnimplementedGreetServiceServer()
 }
 
@@ -62,6 +74,9 @@ type UnimplementedGreetServiceServer struct {
 
 func (UnimplementedGreetServiceServer) SayHello(context.Context, *NoParam) (*HelloResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
+}
+func (UnimplementedGreetServiceServer) GetMobilesByOs(context.Context, *MobilesByOsRequest) (*MobilesByOsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMobilesByOs not implemented")
 }
 func (UnimplementedGreetServiceServer) mustEmbedUnimplementedGreetServiceServer() {}
 
@@ -94,6 +109,24 @@ func _GreetService_SayHello_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GreetService_GetMobilesByOs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MobilesByOsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GreetServiceServer).GetMobilesByOs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GreetService_GetMobilesByOs_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GreetServiceServer).GetMobilesByOs(ctx, req.(*MobilesByOsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GreetService_ServiceDesc is the grpc.ServiceDesc for GreetService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -104,6 +137,10 @@ var GreetService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SayHello",
 			Handler:    _GreetService_SayHello_Handler,
+		},
+		{
+			MethodName: "GetMobilesByOs",
+			Handler:    _GreetService_GetMobilesByOs_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
