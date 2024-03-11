@@ -1,11 +1,13 @@
 package main
 
 import (
+	core "Gographql/cmd/core"
 	grpcserver "Gographql/cmd/grpc"
-	graph "Gographql/graph"
+	"Gographql/graph"
 	generated "Gographql/graph/generated"
 	"Gographql/internal/core/services"
 	"Gographql/internal/handler/api"
+	kafkaHandler "Gographql/internal/handler/kafka"
 	"Gographql/internal/infrastructure/repository"
 	"fmt"
 	"log"
@@ -17,6 +19,7 @@ import (
 )
 
 func main() {
+
 	//Set up Mobile Processor
 	mobileRepository := repository.NewMobileRepo("Gorm")
 	mobileService := services.NewMobileInteractor(&mobileRepository)
@@ -46,6 +49,7 @@ func main() {
 		Handler:      mux,
 	}
 	//Run GRPC server
+
 	go func() {
 		grpcserver.InitialiseGRPC()
 	}()
@@ -56,6 +60,14 @@ func main() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Panic(err)
 		}
+	}()
+
+	//Go Routine to run Kafka
+	//Initialise Processors for Kafka
+	BrandHandlerKafka := kafkaHandler.NewBrandProcessor(brandService)
+
+	go func() {
+		core.InitKafkaProducer("mobiles", BrandHandlerKafka)
 	}()
 
 	// Prevent the main goroutine from exiting
